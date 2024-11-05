@@ -110,7 +110,7 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
 
   default_node_pool {
     name                         = "default"
-    vm_size                      = "Standard_DS2_v2"
+    vm_size                      = "Standard_D2_V2"
     os_disk_size_gb              = 30
     os_sku                       = "Ubuntu"
     min_count                    = 1
@@ -120,11 +120,11 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
     only_critical_addons_enabled = true
     vnet_subnet_id               = data.azurerm_subnet.snet-aks.id
 
-    zones = [
-      "1",
-      "2",
-      "3",
-    ]
+    # zones = [
+    #   "1",
+    #   "2",
+    #   "3",
+    # ]
   }
   auto_scaler_profile {
     balance_similar_node_groups = true
@@ -158,7 +158,7 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
 resource "azurerm_kubernetes_cluster_node_pool" "nodepool" {
   name                  = "user"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks-cluster.id
-  vm_size               = "Standard_DS2_v2"
+  vm_size               = "Standard_D2_V2"
   os_disk_size_gb       = 30
   os_sku                = "Ubuntu"
   min_count             = 1
@@ -167,11 +167,11 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodepool" {
   max_pods              = 250
   mode                  = "User"
   vnet_subnet_id        = data.azurerm_subnet.snet-aks.id
-  zones = [
-    "1",
-    "2",
-    "3",
-  ]
+  # zones = [
+  #   "1",
+  #   "2",
+  #   "3",
+  # ]
 }
 
 resource "azurerm_role_assignment" "role-assignment-acr" {
