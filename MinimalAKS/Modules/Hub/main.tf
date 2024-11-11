@@ -27,6 +27,28 @@ resource "azurerm_subnet_network_security_group_association" "gtw-nsg-group" {
   network_security_group_id = azurerm_network_security_group.gtw-nsg.id
 }
 
+resource "azurerm_public_ip" "gtw-ip" {
+  name                = "gtw-pip"
+  location            = var.resource_group.location
+  resource_group_name = var.resource_group.name
+  allocation_method   = "Static"
+
+}
+
+resource "azurerm_network_interface" "gtw-nic" {
+  name                = "gtw-nic"
+  location            = var.resource_group.location
+  resource_group_name = var.resource_group.name
+
+  ip_configuration {
+    name                          = "internet"
+    subnet_id                     = azurerm_subnet.gtw_subnet.id
+    private_ip_address_allocation = "Static"
+    public_ip_address_id          = azurerm_public_ip.gtw-ip.id
+    private_ip_address            = local.first_private_gtw_ip
+  }
+}
+
 # Subnet Aks
 resource "azurerm_subnet" "aks_subnet" {
   name                 = "aks-subnet"
