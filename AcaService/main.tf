@@ -17,10 +17,12 @@ data "azurerm_container_app_environment" "acaEnv" {
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 
+# data "azurerm_key_vault"
+
 module "aca" {
   source = "./Modules/App"
   acaName = var.acaName
-  resourceGroupName = azurerm_resource_group.rg.name
+  resourceGroupName = data.azurerm_resource_group.rg.name
   containerAppsEnvironmentId = data.azurerm_container_app_environment.acaEnv.id
   containerRegistryUserAssignedIdentityId = data.azurerm_user_assigned_identity.acrPullIdentity.id
   ingressEnabled = var.ingressEnabled
@@ -28,5 +30,6 @@ module "aca" {
   containerName = var.containerName
   containerImage = var.containerImage
   acrLoginServer = data.azurerm_container_registry.acr.login_server
+  environmentVariables = var.environmentVariables
   
 }

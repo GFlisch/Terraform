@@ -28,6 +28,8 @@ module "acr" {
   location = azurerm_resource_group.rg.location
   acrName = local.acrName
   containerRegistryUserAssignedIdentityName = local.acaAcrIdentityName
+  // WARNING: ADMIN USER ENABLED FOR TEST PURPOSES
+  adminEnabled = true
 }
 
 module "acaEnvironment" {
@@ -45,4 +47,14 @@ module "logAnalytics" {
   location = azurerm_resource_group.rg.location
   workspaceName = local.logAnalyticsWorkspaceName
   rootName = var.rootName
+}
+
+module "keyVault" {
+  source = "./Modules/KeyVault"
+  keyVaultName = local.keyVaultName
+  resourceGroupName = azurerm_resource_group.rg.name
+  location = azurerm_resource_group.rg.location
+  keyVaultUserAssignedIdentityName = local.keyVaultIdentityName
+  
+  
 }

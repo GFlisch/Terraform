@@ -9,5 +9,6 @@ locals {
   acaAcrIdentityName = "${var.rootName}-acr-pull-identity"
   acaEnvironmentName = "${var.rootName}-environment"
   logAnalyticsWorkspaceName = "${var.rootName}-law"
-  
+  keyVaultName = "${var.rootName}-kv"
+  keyVaultIdentityName = "${var.rootName}-kv-user-identity"
 }

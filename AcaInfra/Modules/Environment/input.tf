@@ -20,6 +20,8 @@ variable "workloadProfiles" {
   }))
   default = [
     {
+      maximum_count         = 0 
+      minimum_count         = 0
       name                  = "Consumption"
       workload_profile_type = "Consumption"
     }

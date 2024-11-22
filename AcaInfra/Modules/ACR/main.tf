@@ -6,7 +6,7 @@ resource "azurerm_container_registry" "acr" {
 
   sku = "Premium"
 
-  admin_enabled                 = false
+  admin_enabled                 = var.adminEnabled
   public_network_access_enabled = true
   network_rule_bypass_option    = "AzureServices"
 }

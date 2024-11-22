@@ -22,3 +22,8 @@ variable "tags" {
 variable "acrName" {
   type = string
 }
+
+variable "adminEnabled" {
+  type = bool
+  default = false  
+}

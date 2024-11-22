@@ -35,3 +35,9 @@ locals {
   acaEnvName = "${var.rootName}-environment"
   
 }
+
+variable "environmentVariables" {
+  type = map(string)
+  description = "Environment variables for the container"
+  default = {}
+}
