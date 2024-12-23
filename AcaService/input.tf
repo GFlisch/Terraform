@@ -1,6 +1,7 @@
 variable "rootName" {
   type = string
-  description = "Name of the root"  
+  description = "Name of the root" 
+  default = "Aca-Arc4u" 
 }
 
 variable "acaName" {

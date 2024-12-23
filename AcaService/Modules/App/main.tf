@@ -32,7 +32,7 @@ resource "azurerm_container_app" "app" {
 
   template {
     container {
-      name   = var.containerName
+      name   = var.acaName
       cpu    = var.cpu
       memory = var.memory
       image  = var.containerImage
