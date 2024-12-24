@@ -34,11 +34,14 @@ module "acr" {
 
 module "acaEnvironment" {
   source = "./Modules/Environment"
-  resource_group_name = azurerm_resource_group.rg.name
+  # resource_group_name = azurerm_resource_group.rg.name
+  resource_group_id = azurerm_resource_group.rg.id
   location = azurerm_resource_group.rg.location
   aca-subnet-id = module.network.aca-subnet-id 
   log_analytics_workspace_id = module.logAnalytics.workspaceId
   environment_name = local.acaEnvironmentName
+  infrastructure_resource_group_name = local.infrastructure_resource_group_name
+  keyVault_certificates_user_identity_id = module.keyVault.keyVaultCertificatesUserIdentityId
 }
 
 module "logAnalytics" {
@@ -55,4 +58,11 @@ module "keyVault" {
   resourceGroupName = azurerm_resource_group.rg.name
   location = azurerm_resource_group.rg.location
   keyVaultUserAssignedIdentityName = local.keyVaultIdentityName
+}
+
+module "storage" {
+  source = "./Modules/Storage"
+  resourceGroupName = azurerm_resource_group.rg.name
+  location = azurerm_resource_group.rg.location
+  storageAccountName = local.storageAccountName
 }

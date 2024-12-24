@@ -1,4 +1,3 @@
-data "azurerm_client_config" "current" {}
 
 resource "azurerm_key_vault" "keyvault" {
   name                            = var.keyVaultName
@@ -28,9 +27,13 @@ resource "azurerm_role_assignment" "keyVaultCertificatesOfficerRoleAssignment" {
 }
 
 
-# enable user to read/write secrets
+# enable user to read/write secrets 
+# TODO remove for production
 resource "azurerm_role_assignment" "keyVaultSecretsOfficerRoleAssignment" {
   scope                = azurerm_key_vault.keyvault.id
   role_definition_name = "Key Vault Secrets Officer"
   principal_id         = data.azurerm_client_config.current.object_id
 }
+
+# TODO remove for production
+data "azurerm_client_config" "current" {}

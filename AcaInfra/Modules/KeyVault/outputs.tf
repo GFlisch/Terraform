@@ -10,6 +10,6 @@ output "keyVaultName" {
   value = azurerm_key_vault.keyvault.name
 }
 
-output "keyVaultCertificatesUserIdentity" {
+output "keyVaultCertificatesUserIdentityId" {
   value = azurerm_user_assigned_identity.keyVaultUserAssignedIdentity.id
 }

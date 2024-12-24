@@ -1,15 +1,15 @@
 output "containerAppsEnvironmentName" {
-  value = azurerm_container_app_environment.environment.name
+  value = azapi_resource.env.name
 }
 
 output "containerAppsEnvironmentId" {
-  value = azurerm_container_app_environment.environment.id
+  value = azapi_resource.env.id
 }
 
-output "containerAppsEnvironmentDefaultDomain" {
-  value = azurerm_container_app_environment.environment.default_domain
-}
+# output "containerAppsEnvironmentDefaultDomain" {
+#   value = azurerm_container_app_environment.environment.default_domain
+# }
 
-output "containerAppsEnvironmentLoadBalancerIP" {
-  value = azurerm_container_app_environment.environment.static_ip_address
-}
+# output "containerAppsEnvironmentLoadBalancerIP" {
+#   value = azurerm_container_app_environment.environment.static_ip_address
+# }

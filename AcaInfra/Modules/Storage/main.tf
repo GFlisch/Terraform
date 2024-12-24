@@ -1,15 +1,15 @@
-resource "azurerm_storage_account" "stacc" {
-  name                     = var.storage_account_name
-  resource_group_name      = var.resource_group_name
+resource "azurerm_storage_account" "storage" {
+  name                     = var.storageAccountName
+  resource_group_name      = var.resourceGroupName
   location                 = var.location
-  account_tier             = "Premium"
   account_replication_type = "LRS"
-  account_kind             = "FileStorage"
+  account_tier             = "Standard"
+  account_kind             = "StorageV2"
 }
 
 resource "azurerm_storage_share" "share" {
-  name                 = "settings"
-  quota                = "5"
+  name                 = var.fileShareName
+  quota                = 5
   storage_account_name = azurerm_storage_account.storage.name
   depends_on           = [azurerm_storage_account.storage]
 }

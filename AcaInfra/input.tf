@@ -11,4 +11,6 @@ locals {
   logAnalyticsWorkspaceName = "${var.rootName}-law"
   keyVaultName = "${var.rootName}-kv"
   keyVaultIdentityName = "${var.rootName}-kv-user-identity"
+  storageAccountName = "${lower(replace(var.rootName, "-", ""))}storage"
+  infrastructure_resource_group_name = "${var.rootName}-env-infra-rg"
 }

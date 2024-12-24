@@ -1,4 +1,4 @@
-variable "resource_group_name" {
+variable "resourceGroupName" {
   type = string
 }
 
@@ -6,7 +6,11 @@ variable "location" {
   type = string
 }
 
-variable "storage_account_name" {
+variable "storageAccountName" {
   type = string
 }
 
+variable "fileShareName" {
+  type = string
+  default = "settings"
+}
