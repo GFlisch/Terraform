@@ -38,7 +38,10 @@ locals {
 }
 
 variable "environmentVariables" {
-  type = map(string)
-  description = "Environment variables for the container"
-  default = {}
+  description = "Environment Variables for the Container"
+  type = list(object({
+    key   = string
+    value = string
+  }))
+  default = []
 }

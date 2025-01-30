@@ -3,9 +3,8 @@ variable "acaName" {
   type        = string
 }
 
-variable "resourceGroupName" {
-  description = "Name of the Resource Group"
-  type        = string
+variable "resource_group_id" {
+  type = string  
 }
 
 variable "containerAppsEnvironmentId" {
@@ -25,11 +24,6 @@ variable "workloadProfileName" {
     default = "Consumption"
 }
 
-variable "containerRegistryUserAssignedIdentityId" {
-    description = "ID of the User Assigned Identity for the Container Registry"
-    type        = string 
-}
-
 variable "ingressEnabled" {
     description = "Enable Ingress"
     type        = bool
@@ -37,7 +31,7 @@ variable "ingressEnabled" {
 
 variable "ingressPort" {
     description = "ID of the Subnet for Ingress"
-    type        = string
+    type        = number
 }
 
 variable "containerName" {
@@ -48,8 +42,8 @@ variable "containerName" {
 
 variable "cpu" {
     description = "CPU for the Container"
-    type        = string
-    default = "0.5"
+    type        = number
+    default = 0.5
 }
 
 variable "memory" {
@@ -64,12 +58,24 @@ variable "containerImage" {
 }
 
 variable "environmentVariables" {
-    description = "Environment Variables for the Container"
-    type        = map(string) 
-    default = {} 
+  description = "Environment Variables for the Container"
+  type = list(object({
+    key   = string
+    value = string
+  }))
+  default = []
 }
 
 variable "acrLoginServer" {
     description = "URL of the ACR"
     type        = string
+}
+
+variable "location"{
+    description = "Location of the ACA"
+    type        = string
+}
+
+variable "keyVault_certificates_user_identity_id" {
+  type = string
 }

@@ -34,7 +34,6 @@ module "acr" {
 
 module "acaEnvironment" {
   source = "./Modules/Environment"
-  # resource_group_name = azurerm_resource_group.rg.name
   resource_group_id = azurerm_resource_group.rg.id
   location = azurerm_resource_group.rg.location
   aca-subnet-id = module.network.aca-subnet-id 
