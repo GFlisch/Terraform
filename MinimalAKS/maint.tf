@@ -20,3 +20,19 @@ module "network" {
   aks_subnet_mask = "10.0.1.0/24"
   other_subnet_mask = "10.0.2.0/24"
 }
+
+module "acr" {
+  source = "./Modules/ACR"
+  resource_group_name = azurerm_resource_group.rg.name
+  location = azurerm_resource_group.rg.location
+  acrName = local.acrName
+  containerRegistryUserAssignedIdentityName = local.aksAcrIdentityName
+  // WARNING: ADMIN USER ENABLED FOR TEST PURPOSES
+  adminEnabled = false
+}
+
+module "aks" {
+  source = "./Modules/Aks"
+  resource_group = azurerm_resource_group.rg
+  aks_name = local.aksName
+}

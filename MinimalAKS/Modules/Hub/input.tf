@@ -10,8 +10,6 @@ variable "rootName"{
     type = string
 }
 
-
-
 variable "vnet_mask" {
     type = string
 }
@@ -19,9 +17,7 @@ variable "vnet_mask" {
 variable "gtw_subnet_mask"{
     type = string
 }
-
-  
-
+ 
 variable "aks_subnet_mask" {
   type = string
 }
