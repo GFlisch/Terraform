@@ -36,3 +36,20 @@ module "aks" {
   resource_group = azurerm_resource_group.rg
   aks_name = local.aksName
 }
+
+module "keyVault" {
+  source = "./Modules/KeyVault"
+  keyVaultName = local.keyVaultName
+  resourceGroupName = azurerm_resource_group.rg.name
+  location = azurerm_resource_group.rg.location
+  keyVaultUserAssignedIdentityName = local.keyVaultIdentityName
+}
+
+# module "nginx" {
+#   source = "./Modules/Nginx"
+#   resource_group = azurerm_resource_group.rg
+#   aks_name = local.aksName
+#   cert_folder = local.certFolder
+# }
+
+

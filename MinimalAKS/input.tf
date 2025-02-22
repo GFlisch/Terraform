@@ -9,6 +9,7 @@ locals {
   keyVaultName = "${var.rootName}-kv"
   aksName = "${var.rootName}-aks"
   keyVaultIdentityName = "${var.rootName}-kv-user-identity"
-  aksAcrIdentityName = "${var.rootName}-acr-pull-identity"    
+  aksAcrIdentityName = "${var.rootName}-acr-pull-identity" 
+  certFolder = "${path.module}/Modules/Nginx/certs"   
 }
 
