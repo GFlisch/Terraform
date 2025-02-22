@@ -45,11 +45,12 @@ module "keyVault" {
   keyVaultUserAssignedIdentityName = local.keyVaultIdentityName
 }
 
-# module "nginx" {
-#   source = "./Modules/Nginx"
-#   resource_group = azurerm_resource_group.rg
-#   aks_name = local.aksName
-#   cert_folder = local.certFolder
-# }
+module "nginx" {
+  source = "./Modules/Nginx"
+  resource_group = azurerm_resource_group.rg
+  aks_name = local.aksName
+  keyVaultId = module.keyVault.keyVaultId
+  cert_folder = local.certFolder
+}
 
 
