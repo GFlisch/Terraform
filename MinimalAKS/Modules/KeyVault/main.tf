@@ -20,7 +20,7 @@ resource "azurerm_user_assigned_identity" "keyVaultUserAssignedIdentity" {
   tags                = var.tags
 }
 
-resource "azurerm_role_assignment" "keyVaultCertificatesOfficerRoleAssignment" {
+resource "azurerm_role_assignment" "keyVaultCertificatesUserRoleAssignment" {
     scope                = azurerm_key_vault.keyvault.id
     role_definition_name = "Key Vault Certificate User"
     principal_id         = azurerm_user_assigned_identity.keyVaultUserAssignedIdentity.principal_id
