@@ -41,11 +41,13 @@ resource "kubernetes_namespace" "nginx" {
 }
 
 resource "helm_release" "nginx" {
-  name       = "nginx"
+  name       = "ingress-nginx"
+  wait       = true
+  timeout    = 600
   namespace  = kubernetes_namespace.nginx.metadata[0].name
-  chart      = "bitnami/nginx"
-  repository = "https://charts.bitnami.com/bitnami"
-  version    = "13.2.16"
+  chart      = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  version    = "4.12.0"
 
   set {
     name  = "service.type"
