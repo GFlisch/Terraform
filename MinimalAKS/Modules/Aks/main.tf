@@ -49,3 +49,14 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     azurerm_role_assignment.aksRoleAssignment,
   ]
 }
+
+resource "azurerm_kubernetes_cluster_node_pool" "additional" {
+  name                  = var.additional_node_pool_name
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.k8s.id
+  vm_size               = var.additional_node_pool_vm_size
+  node_count            = var.additional_node_pool_node_count
+  max_pods              = 110  # Adjust this value based on your requirements
+  os_type               = "Linux"
+  mode                  = "User"
+  orchestrator_version  = azurerm_kubernetes_cluster.k8s.kubernetes_version
+}

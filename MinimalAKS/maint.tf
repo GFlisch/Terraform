@@ -35,6 +35,8 @@ module "aks" {
   source = "./Modules/Aks"
   resource_group = azurerm_resource_group.rg
   aks_name = local.aksName
+  additional_node_pool_name = "guidance"
+  additional_node_pool_node_count = 3
 }
 
 module "keyVault" {
@@ -59,3 +61,9 @@ module "redis" {
   redis_cache_name = "GuidanceCache"
 }
 
+module "kubemq" {
+  source = "./Modules/KubeMQ"
+  resource_group = azurerm_resource_group.rg
+  aks_name = local.aksName
+  kubemq_build = "https://deploy.kubemq.io/build/5923573806099130"
+}

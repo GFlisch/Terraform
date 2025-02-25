@@ -32,3 +32,21 @@ locals {
   ssh_key_name = "${var.aks_name}-ssh"
   aksIdentityName = "${var.aks_name}-aks-identity"    
 }
+
+variable "additional_node_pool_name" {
+  description = "The name of the additional node pool."
+  type        = string
+  default     = "additionalpool"
+}
+
+variable "additional_node_pool_vm_size" {
+  description = "The VM size for the additional node pool."
+  type        = string
+  default     = "Standard_D2_v2"
+}
+
+variable "additional_node_pool_node_count" {
+  description = "The number of nodes in the additional node pool."
+  type        = number
+  default     = 1
+}
