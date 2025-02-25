@@ -7,7 +7,7 @@ resource "azurerm_redis_cache" "redis" {
   family              = "C"
   sku_name            = var.sku_name
   tags                = var.tags
-  enable_non_ssl_port = true
+  non_ssl_port_enabled = true
 
   redis_configuration {
     maxmemory_policy = "allkeys-lru"

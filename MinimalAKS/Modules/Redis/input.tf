@@ -17,7 +17,7 @@ variable "resource_group" {
 
 variable "capacity" {
   type = number 
-  default = 250
+  default = 0
 }
 
 variable "sku_name" {
