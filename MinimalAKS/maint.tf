@@ -53,4 +53,9 @@ module "nginx" {
   cert_folder = local.certFolder
 }
 
+module "redis" {
+  source = "./Modules/Redis"
+  resource_group = azurerm_resource_group.rg
+  redis_cache_name = "GuidanceCache"
+}
 
