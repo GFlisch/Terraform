@@ -59,4 +59,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
   os_type               = "Linux"
   mode                  = "User"
   orchestrator_version  = azurerm_kubernetes_cluster.k8s.kubernetes_version
+  node_labels = {
+    "pool" = "guidance"
+  }
 }
