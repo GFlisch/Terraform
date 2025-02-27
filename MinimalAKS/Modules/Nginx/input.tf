@@ -38,6 +38,6 @@ variable "tags" {
   default = {}
 }
 
-variable "internal_ip_addrress" {
+variable "public_ip_addrress" {
   type = string
 }

@@ -22,6 +22,20 @@ resource "azurerm_network_security_group" "gtw-nsg" {
   resource_group_name = var.resource_group.name
 }
 
+resource "azurerm_network_security_rule" "nginx_https_rule" {
+  name                        = "AllowHttpsFromSpecificRange"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "443"
+  source_address_prefix       = var.gtw_subnet_mask
+  destination_address_prefix  = "*"
+  resource_group_name         = var.resource_group.name
+  network_security_group_name = azurerm_network_security_group.gtw-nsg.name
+}
+
 resource "azurerm_subnet_network_security_group_association" "gtw-nsg-group" {
   subnet_id                 = azurerm_subnet.gtw_subnet.id
   network_security_group_id = azurerm_network_security_group.gtw-nsg.id
@@ -61,6 +75,20 @@ resource "azurerm_network_security_group" "aks-nsg" {
   name                = "aks-nsg"
   location            = var.resource_group.location
   resource_group_name = var.resource_group.name
+}
+
+resource "azurerm_network_security_rule" "aks_nsg_https_rule" {
+  name                        = "AllowHttpsFromNginxIP"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "443"
+  source_address_prefix       = azurerm_public_ip.gtw-ip.ip_address
+  destination_address_prefix  = "*"
+  resource_group_name         = var.resource_group.name
+  network_security_group_name = azurerm_network_security_group.aks-nsg.name
 }
 
 resource "azurerm_subnet_network_security_group_association" "aks-nsg-group" {

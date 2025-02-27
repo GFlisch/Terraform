@@ -36,7 +36,7 @@ locals {
 variable "additional_node_pool_name" {
   description = "The name of the additional node pool."
   type        = string
-  default     = "additionalpool"
+  default     = "applicationpool"
 }
 
 variable "additional_node_pool_vm_size" {
@@ -48,7 +48,7 @@ variable "additional_node_pool_vm_size" {
 variable "additional_node_pool_node_count" {
   description = "The number of nodes in the additional node pool."
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "vnet_name" {

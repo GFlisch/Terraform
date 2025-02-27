@@ -49,12 +49,7 @@ resource "helm_release" "nginx" {
   }
 
   set {
-    name  = "controller.service.loadBalancerIP"
-    value = var.internal_ip_addrress
-  }
-
-  set {
-    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-internal"
-    value = "true"
+    name  = "service.loadBalancerIP"
+    value = var.public_ip_addrress
   }
 }

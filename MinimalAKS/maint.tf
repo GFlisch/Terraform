@@ -56,7 +56,7 @@ module "nginx" {
   keyVaultId = module.keyVault.keyVaultId
   cert_folder = local.certFolder
   kube_config = module.aks.kube_config
-  internal_ip_addrress ="10.1.0.11"
+  public_ip_addrress = module.network.public_ip_address
 }
 
 module "redis" {
