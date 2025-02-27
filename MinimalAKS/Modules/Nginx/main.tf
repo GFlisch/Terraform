@@ -1,9 +1,3 @@
-
-data "azurerm_kubernetes_cluster" "k8s" {
-    name                = var.aks_name
-    resource_group_name = var.resource_group.name
-}
-
 resource "azurerm_key_vault_secret" "secrets" {
   for_each    = local.cert_files
   name        = replace(each.key, "/[^a-zA-Z0-9-]/", "")
@@ -12,26 +6,26 @@ resource "azurerm_key_vault_secret" "secrets" {
 }
 
 provider "kubectl" {
-  host                   = data.azurerm_kubernetes_cluster.k8s.kube_config[0].host
-  client_certificate     = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].client_certificate)
-  client_key             = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].client_key)
-  cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].cluster_ca_certificate)
+  host                   = var.kube_config[0].host
+  client_certificate     = base64decode(var.kube_config[0].client_certificate)
+  client_key             = base64decode(var.kube_config[0].client_key)
+  cluster_ca_certificate = base64decode(var.kube_config[0].cluster_ca_certificate)
 }
 
 provider "helm" {
   kubernetes {
-    host                   = data.azurerm_kubernetes_cluster.k8s.kube_config[0].host
-    client_certificate     = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].client_certificate)
-    client_key             = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].client_key)
-    cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].cluster_ca_certificate)
+    host                   = var.kube_config[0].host
+    client_certificate     = base64decode(var.kube_config[0].client_certificate)
+    client_key             = base64decode(var.kube_config[0].client_key)
+    cluster_ca_certificate = base64decode(var.kube_config[0].cluster_ca_certificate)
   }
 }
 
 provider "kubernetes" {
-  host                   = data.azurerm_kubernetes_cluster.k8s.kube_config[0].host
-  client_certificate     = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].client_certificate)
-  client_key             = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].client_key)
-  cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].cluster_ca_certificate)
+  host                   = var.kube_config[0].host
+  client_certificate     = base64decode(var.kube_config[0].client_certificate)
+  client_key             = base64decode(var.kube_config[0].client_key)
+  cluster_ca_certificate = base64decode(var.kube_config[0].cluster_ca_certificate)
 }
 
 resource "kubernetes_namespace" "nginx" {
@@ -51,6 +45,16 @@ resource "helm_release" "nginx" {
 
   set {
     name  = "service.type"
-    value = "ClusterIP"
+    value = "LoadBalancer"
+  }
+
+  set {
+    name  = "controller.service.loadBalancerIP"
+    value = var.internal_ip_addrress
+  }
+
+  set {
+    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-internal"
+    value = "true"
   }
 }

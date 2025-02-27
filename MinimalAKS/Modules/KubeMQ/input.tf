@@ -2,6 +2,16 @@ variable "aks_name" {
   type = string
 }
 
+variable "kube_config" {
+  type = any
+  sensitive = true
+}
+
+variable "kube_config_raw" {
+  type = string
+  sensitive = true
+}
+
 variable "resource_group" {
   type = object({
     name     = string

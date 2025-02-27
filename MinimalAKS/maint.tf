@@ -37,6 +37,8 @@ module "aks" {
   aks_name = local.aksName
   additional_node_pool_name = "guidance"
   additional_node_pool_node_count = 3
+  vnet_name = module.network.vnet_name
+  aks_subnet = module.network.aks_subnet
 }
 
 module "keyVault" {
@@ -53,6 +55,8 @@ module "nginx" {
   aks_name = local.aksName
   keyVaultId = module.keyVault.keyVaultId
   cert_folder = local.certFolder
+  kube_config = module.aks.kube_config
+  internal_ip_addrress ="10.1.0.11"
 }
 
 module "redis" {
@@ -61,9 +65,11 @@ module "redis" {
   redis_cache_name = "GuidanceCache"
 }
 
-module "kubemq" {
-  source = "./Modules/KubeMQ"
-  resource_group = azurerm_resource_group.rg
-  aks_name = local.aksName
-  kubemq_build = "https://deploy.kubemq.io/build/5923573806099130"
-}
+# module "kubemq" {
+#   source = "./Modules/KubeMQ"
+#   resource_group = azurerm_resource_group.rg
+#   aks_name = local.aksName
+#   kubemq_build = "https://deploy.kubemq.io/build/2738749728506952"
+#   kube_config = module.aks.kube_config
+#   kube_config_raw = module.aks.kube_config_raw
+# }

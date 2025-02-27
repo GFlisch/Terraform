@@ -2,9 +2,15 @@ variable "aks_name" {
   type = string
 }
 
+
 variable "kubernetes_secret_name" {
   type = string
   default = "certificates"
+}
+
+variable "kube_config" {
+  type = any
+  sensitive = true
 }
 
 variable "resource_group" {
@@ -30,4 +36,8 @@ locals {
 variable "tags" {
   type = map(string)
   default = {}
+}
+
+variable "internal_ip_addrress" {
+  type = string
 }

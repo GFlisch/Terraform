@@ -50,3 +50,33 @@ variable "additional_node_pool_node_count" {
   type        = number
   default     = 1
 }
+
+variable "vnet_name" {
+  description = "The virtual network object from the Hub module"
+  type        = string
+}
+
+variable "cidr_vnet" {
+  description = "The virtual network used internally for the pods"
+  type        = string
+  default     = "10.1.0.0/16"
+}
+
+variable "dns_service_ip" {
+  description = "The IP address of the DNS service"
+  type        = string
+  default     = "10.1.0.10"
+}
+
+variable "aks_subnet" {
+  type = object({
+    name     = string
+    id       = string
+  })
+}
+
+variable "app_max_node_pool"{
+  type = number
+  default = 10
+}
+

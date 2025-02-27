@@ -1,25 +1,19 @@
-
-data "azurerm_kubernetes_cluster" "k8s" {
-    name                = var.aks_name
-    resource_group_name = var.resource_group.name
-}
-
 provider "kubectl" {
-  host                   = data.azurerm_kubernetes_cluster.k8s.kube_config[0].host
-  client_certificate     = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].client_certificate)
-  client_key             = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].client_key)
-  cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].cluster_ca_certificate)
+  host                   = var.kube_config[0].host
+  client_certificate     = base64decode(var.kube_config[0].client_certificate)
+  client_key             = base64decode(var.kube_config[0].client_key)
+  cluster_ca_certificate = base64decode(var.kube_config[0].cluster_ca_certificate)
 }
 
 provider "kubernetes" {
-  host                   = data.azurerm_kubernetes_cluster.k8s.kube_config[0].host
-  client_certificate     = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].client_certificate)
-  client_key             = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].client_key)
-  cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.k8s.kube_config[0].cluster_ca_certificate)
+  host                   = var.kube_config[0].host
+  client_certificate     = base64decode(var.kube_config[0].client_certificate)
+  client_key             = base64decode(var.kube_config[0].client_key)
+  cluster_ca_certificate = base64decode(var.kube_config[0].cluster_ca_certificate)
 }
 
 resource "local_file" "kubeconfig" {
-  content  = data.azurerm_kubernetes_cluster.k8s.kube_config_raw
+  content  = var.kube_config_raw
   filename = "${path.module}/temp/kubeconfig.yaml"
 }
 
