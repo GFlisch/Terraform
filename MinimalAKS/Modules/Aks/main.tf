@@ -85,31 +85,3 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
     "pool" = "guidance"
   }
 }
-
-provider "kubernetes" {
-  host                   = azurerm_kubernetes_cluster.k8s.kube_config[0].host
-  client_certificate     = base64decode(azurerm_kubernetes_cluster.k8s.kube_config[0].client_certificate)
-  client_key             = base64decode(azurerm_kubernetes_cluster.k8s.kube_config[0].client_key)
-  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.k8s.kube_config[0].cluster_ca_certificate)
-}
-
-resource "kubernetes_secret" "acr_auth" {
-  metadata {
-    name      = "acr-secret"
-    namespace = "default"
-  }
-
-  data = {
-    ".dockerconfigjson" = jsonencode({
-      "auths" = {
-        "${var.acr.login_server}" = {
-          "username" = var.acr.admin_username
-          "password" = var.acr.admin_password
-          "auth"     = base64encode("${var.acr.admin_username}:${var.acr.admin_password}")
-        }
-      }
-    })
-  }
-
-  type = "kubernetes.io/dockerconfigjson"
-}
