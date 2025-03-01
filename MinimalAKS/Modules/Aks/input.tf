@@ -80,3 +80,12 @@ variable "app_max_node_pool"{
   default = 10
 }
 
+variable "acr" {
+  type = object({
+    name     = string
+    id       = string
+    login_server = string
+    admin_username = string
+    admin_password = string
+  })  
+}

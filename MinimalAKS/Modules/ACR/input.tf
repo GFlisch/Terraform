@@ -25,5 +25,5 @@ variable "acrName" {
 
 variable "adminEnabled" {
   type = bool
-  default = false  
+  default = true  
 }

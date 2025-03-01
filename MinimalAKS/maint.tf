@@ -39,6 +39,7 @@ module "aks" {
   additional_node_pool_node_count = 3
   vnet_name = module.network.vnet_name
   aks_subnet = module.network.aks_subnet
+  acr = module.acr.acr
 }
 
 module "keyVault" {

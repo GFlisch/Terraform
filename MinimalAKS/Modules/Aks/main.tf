@@ -17,6 +17,11 @@ resource "azurerm_role_assignment" "aksRoleAssignment" {
   principal_id         = azurerm_user_assigned_identity.aksUserAssignedIdentity.principal_id
 }
 
+resource "azurerm_role_assignment" "acr_pull" {
+  scope                = var.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_user_assigned_identity.aksUserAssignedIdentity.principal_id
+}
 
 resource "azurerm_kubernetes_cluster" "k8s" {
   location            = var.resource_group.location
@@ -60,6 +65,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
   depends_on = [
     azurerm_role_assignment.aksRoleAssignment,
+    var.acr,
   ]
 }
 
@@ -78,4 +84,32 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
   node_labels = {
     "pool" = "guidance"
   }
+}
+
+provider "kubernetes" {
+  host                   = azurerm_kubernetes_cluster.k8s.kube_config[0].host
+  client_certificate     = base64decode(azurerm_kubernetes_cluster.k8s.kube_config[0].client_certificate)
+  client_key             = base64decode(azurerm_kubernetes_cluster.k8s.kube_config[0].client_key)
+  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.k8s.kube_config[0].cluster_ca_certificate)
+}
+
+resource "kubernetes_secret" "acr_auth" {
+  metadata {
+    name      = "acr-secret"
+    namespace = "default"
+  }
+
+  data = {
+    ".dockerconfigjson" = jsonencode({
+      "auths" = {
+        "${var.acr.login_server}" = {
+          "username" = var.acr.admin_username
+          "password" = var.acr.admin_password
+          "auth"     = base64encode("${var.acr.admin_username}:${var.acr.admin_password}")
+        }
+      }
+    })
+  }
+
+  type = "kubernetes.io/dockerconfigjson"
 }
