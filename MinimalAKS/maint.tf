@@ -27,8 +27,9 @@ module "acr" {
   location = azurerm_resource_group.rg.location
   acrName = local.acrName
   containerRegistryUserAssignedIdentityName = local.aksAcrIdentityName
-  // WARNING: ADMIN USER ENABLED FOR TEST PURPOSES
-  adminEnabled = false
+  // Even with the AcrPull right, this is not possible to deploy a pod from the acr
+  // without admin credentials. How to do this?
+  adminEnabled = true
 }
 
 module "aks" {
