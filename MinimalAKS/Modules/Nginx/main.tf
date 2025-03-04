@@ -1,9 +1,9 @@
-resource "azurerm_key_vault_secret" "secrets" {
-  for_each    = local.cert_files
-  name        = replace(each.key, "/[^a-zA-Z0-9-]/", "")
-  value       = base64encode(file("${var.cert_folder}/${each.key}"))
-  key_vault_id = var.keyVaultId
-}
+# resource "azurerm_key_vault_secret" "secrets" {
+#   for_each    = local.cert_files
+#   name        = replace(each.key, "/[^a-zA-Z0-9-]/", "")
+#   value       = base64encode(file("${var.cert_folder}/${each.key}"))
+#   key_vault_id = var.keyVaultId
+# }
 
 provider "kubectl" {
   host                   = var.kube_config[0].host
@@ -47,9 +47,5 @@ resource "helm_release" "nginx" {
     name  = "service.type"
     value = "LoadBalancer"
   }
-
-  set {
-    name  = "service.loadBalancerIP"
-    value = var.public_ip_addrress
-  }
 }
+
