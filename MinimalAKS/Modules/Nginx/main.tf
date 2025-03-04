@@ -1,10 +1,3 @@
-# resource "azurerm_key_vault_secret" "secrets" {
-#   for_each    = local.cert_files
-#   name        = replace(each.key, "/[^a-zA-Z0-9-]/", "")
-#   value       = base64encode(file("${var.cert_folder}/${each.key}"))
-#   key_vault_id = var.keyVaultId
-# }
-
 provider "kubectl" {
   host                   = var.kube_config[0].host
   client_certificate     = base64decode(var.kube_config[0].client_certificate)

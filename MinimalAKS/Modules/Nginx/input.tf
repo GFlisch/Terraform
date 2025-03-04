@@ -37,7 +37,3 @@ variable "tags" {
   type = map(string)
   default = {}
 }
-
-variable "public_ip_addrress" {
-  type = string
-}

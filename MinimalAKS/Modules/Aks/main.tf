@@ -1,9 +1,3 @@
-
-resource "azurerm_private_dns_zone" "dns" {
-  name                = "dns.arc4u.io"
-  resource_group_name = var.resource_group.name
-}
-
 resource "azurerm_user_assigned_identity" "aksUserAssignedIdentity" {
   name                = local.aksIdentityName
   resource_group_name = var.resource_group.name
@@ -11,23 +5,18 @@ resource "azurerm_user_assigned_identity" "aksUserAssignedIdentity" {
   tags                = var.tags
 }
 
-resource "azurerm_role_assignment" "aksRoleAssignment" {
-  scope                = azurerm_private_dns_zone.dns.id
-  role_definition_name = "Private DNS Zone Contributor"
-  principal_id         = azurerm_user_assigned_identity.aksUserAssignedIdentity.principal_id
-}
-
 resource "azurerm_role_assignment" "acr_pull" {
   scope                = var.acr.id
   role_definition_name = "AcrPull"
-  principal_id         = azurerm_user_assigned_identity.aksUserAssignedIdentity.principal_id
+  principal_id         = azurerm_kubernetes_cluster.k8s.kubelet_identity[0].object_id
 }
 
 resource "azurerm_kubernetes_cluster" "k8s" {
   location            = var.resource_group.location
   name                = var.aks_name
   resource_group_name = var.resource_group.name
-  dns_prefix          = local.dns_prefix
+  oidc_issuer_enabled = true
+  dns_prefix          = "arc4u"
 
   identity {
     type         = "UserAssigned"
@@ -36,37 +25,29 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
   default_node_pool {
     name                         = "agentpool"
-    vm_size                      = "Standard_D2_v2"
+    vm_size                      = "Standard_D2as_v5"
     min_count                    = 1
-    max_count                    = var.node_count
+    max_count                    = 3
     enable_auto_scaling          = true
     max_pods                     = 110
     only_critical_addons_enabled = true
     vnet_subnet_id               = var.aks_subnet.id
+    zones                        = ["1"]
   }
 
   auto_scaler_profile {
-    balance_similar_node_groups = true
+    scale_down_unneeded         = "1m"
+    scale_down_delay_after_add  = "1m"
+    scale_down_unready          = "1m"
+    skip_nodes_with_system_pods = true
   }
 
-  linux_profile {
-    admin_username = var.username
-
-    ssh_key {
-      key_data = azapi_resource_action.ssh_public_key_gen.output.publicKey
-    }
+network_profile {
+    network_plugin     = "azure"
+    network_plugin_mode = "overlay"
+    network_data_plane = "cilium"
+    network_policy = "cilium"
   }
-  network_profile {
-    network_plugin    = "kubenet"
-    load_balancer_sku = "standard"
-    service_cidr = var.cidr_vnet
-    dns_service_ip = var.dns_service_ip
-  }
-
-  depends_on = [
-    azurerm_role_assignment.aksRoleAssignment,
-    var.acr,
-  ]
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "additional" {
@@ -80,8 +61,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
   max_pods              = 250
   mode                  = "User"
   orchestrator_version  = azurerm_kubernetes_cluster.k8s.kubernetes_version
-  vnet_subnet_id = var.aks_subnet.id
+  vnet_subnet_id        = var.aks_subnet.id
+  zones                 = ["1"]
   node_labels = {
-    "pool" = "guidance"
+    "pool" = "application"
   }
 }

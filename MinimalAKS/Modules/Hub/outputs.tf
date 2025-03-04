@@ -5,7 +5,3 @@ output "vnet_name" {
 output "aks_subnet" {
   value = azurerm_subnet.aks_subnet
 }
-
-output "public_ip_address"{
-  value = azurerm_public_ip.gtw-ip.ip_address
-}

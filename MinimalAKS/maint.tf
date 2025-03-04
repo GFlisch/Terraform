@@ -58,14 +58,13 @@ module "nginx" {
   keyVaultId = module.keyVault.keyVaultId
   cert_folder = local.certFolder
   kube_config = module.aks.kube_config
-  public_ip_addrress = module.network.public_ip_address
 }
 
-module "redis" {
-  source = "./Modules/Redis"
-  resource_group = azurerm_resource_group.rg
-  redis_cache_name = "GuidanceCache"
-}
+# module "redis" {
+#   source = "./Modules/Redis"
+#   resource_group = azurerm_resource_group.rg
+#   redis_cache_name = "GuidanceCache"
+# }
 
 # module "kubemq" {
 #   source = "./Modules/KubeMQ"
