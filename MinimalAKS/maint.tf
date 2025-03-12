@@ -12,20 +12,20 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "network" {
-  source = "./Modules/Hub"
-  resource_group = azurerm_resource_group.rg
-  rootName = var.rootName
-  vnet_mask = "10.0.0.0/16"
-  gtw_subnet_mask = "10.0.0.0/24"
-  aks_subnet_mask = "10.0.1.0/24"
-  other_subnet_mask = "10.0.2.0/24"
+  source            = "./Modules/VNet"
+  resource_group    = azurerm_resource_group.rg
+  rootName          = var.rootName
+  vnet_mask         = var.base_cidr
+  gtw_subnet_mask   = cidrsubnet(var.base_cidr, 12, 0)
+  aks_subnet_mask   = cidrsubnet(var.base_cidr, 8, 1)
+  other_subnet_mask = cidrsubnet(var.base_cidr, 8, 2)
 }
 
 module "acr" {
-  source = "./Modules/ACR"
-  resource_group_name = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
-  acrName = local.acrName
+  source                                    = "./Modules/ACR"
+  resource_group_name                       = azurerm_resource_group.rg.name
+  location                                  = azurerm_resource_group.rg.location
+  acrName                                   = local.acrName
   containerRegistryUserAssignedIdentityName = local.aksAcrIdentityName
   // Even with the AcrPull right, this is not possible to deploy a pod from the acr
   // without admin credentials. How to do this?
@@ -33,32 +33,31 @@ module "acr" {
 }
 
 module "aks" {
-  source = "./Modules/Aks"
-  resource_group = azurerm_resource_group.rg
-  aks_name = local.aksName
-  additional_node_pool_name = "guidance"
+  source                          = "./Modules/Aks"
+  resource_group                  = azurerm_resource_group.rg
+  aks_name                        = local.aksName
+  additional_node_pool_name       = "guidance"
   additional_node_pool_node_count = 3
-  vnet_name = module.network.vnet_name
-  aks_subnet = module.network.aks_subnet
-  acr = module.acr.acr
+  aks_subnet                      = module.network.aks_subnet
+  acr                             = module.acr.acr
 }
 
 module "keyVault" {
-  source = "./Modules/KeyVault"
-  keyVaultName = local.keyVaultName
-  resourceGroupName = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
+  source                           = "./Modules/KeyVault"
+  keyVaultName                     = local.keyVaultName
+  resourceGroupName                = azurerm_resource_group.rg.name
+  location                         = azurerm_resource_group.rg.location
   keyVaultUserAssignedIdentityName = local.keyVaultIdentityName
 }
 
-module "nginx" {
-  source = "./Modules/Nginx"
-  resource_group = azurerm_resource_group.rg
-  aks_name = local.aksName
-  keyVaultId = module.keyVault.keyVaultId
-  cert_folder = local.certFolder
-  kube_config = module.aks.kube_config
-}
+# module "nginx" {
+#   source         = "./Modules/Nginx"
+#   resource_group = azurerm_resource_group.rg
+#   aks_name       = local.aksName
+#   keyVaultId     = module.keyVault.keyVaultId
+#   cert_folder    = local.certFolder
+#   kube_config    = module.aks.kube_config
+# }
 
 # module "redis" {
 #   source = "./Modules/Redis"

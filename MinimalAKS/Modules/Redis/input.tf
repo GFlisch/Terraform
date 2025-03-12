@@ -3,7 +3,7 @@ variable "redis_cache_name" {
 }
 
 variable "tags" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
@@ -16,12 +16,12 @@ variable "resource_group" {
 }
 
 variable "capacity" {
-  type = number 
+  type    = number
   default = 0
 }
 
 variable "sku_name" {
-  type = string
+  type    = string
   default = "Basic"
 }
 

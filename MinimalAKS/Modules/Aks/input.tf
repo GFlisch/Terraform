@@ -11,7 +11,7 @@ variable "resource_group" {
 }
 
 variable "tags" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
@@ -33,33 +33,28 @@ variable "additional_node_pool_node_count" {
   default     = 2
 }
 
-variable "vnet_name" {
-  description = "The virtual network object from the Hub module"
-  type        = string
-}
-
 variable "aks_subnet" {
   type = object({
-    name     = string
-    id       = string
+    name = string
+    id   = string
   })
 }
 
-variable "app_max_node_pool"{
-  type = number
+variable "app_max_node_pool" {
+  type    = number
   default = 10
 }
 
 variable "acr" {
   type = object({
-    name     = string
-    id       = string
-    login_server = string
+    name           = string
+    id             = string
+    login_server   = string
     admin_username = string
     admin_password = string
-  })  
+  })
 }
 
 locals {
-  aksIdentityName = "${var.aks_name}-aks-identity"    
+  aksIdentityName = "${var.aks_name}-aks-identity"
 }

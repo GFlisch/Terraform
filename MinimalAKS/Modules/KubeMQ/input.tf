@@ -3,12 +3,12 @@ variable "aks_name" {
 }
 
 variable "kube_config" {
-  type = any
+  type      = any
   sensitive = true
 }
 
 variable "kube_config_raw" {
-  type = string
+  type      = string
   sensitive = true
 }
 
@@ -21,17 +21,17 @@ variable "resource_group" {
 }
 
 variable "tags" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
 variable "kubemq_init" {
-  type = string
+  type    = string
   default = "https://deploy.kubemq.io/init"
 }
 
 variable "namespace" {
-  type = string
+  type    = string
   default = "kubemq"
 }
 variable "kubemq_build" {

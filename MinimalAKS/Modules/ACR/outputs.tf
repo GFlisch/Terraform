@@ -14,6 +14,6 @@ output "containerRegistryUserAssignedIdentityId" {
   value = azurerm_user_assigned_identity.containerRegistryUserAssignedIdentity.id
 }
 
-output "acr"{
+output "acr" {
   value = azurerm_container_registry.acr
 }

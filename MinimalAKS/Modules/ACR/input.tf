@@ -15,7 +15,7 @@ variable "containerRegistryPullRoleGuid" {
 }
 
 variable "tags" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
@@ -24,6 +24,6 @@ variable "acrName" {
 }
 
 variable "adminEnabled" {
-  type = bool
-  default = true  
+  type    = bool
+  default = true
 }
