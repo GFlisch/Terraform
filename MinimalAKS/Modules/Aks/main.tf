@@ -11,6 +11,13 @@ resource "azurerm_role_assignment" "acr_pull" {
   principal_id         = azurerm_kubernetes_cluster.k8s.kubelet_identity[0].object_id
 }
 
+
+# resource "azurerm_kubernetes_cluster_extension" "k8sRouting" {
+#   name = "httpApplicationRouting"
+#   cluster_id = azurerm_kubernetes_cluster.k8s.id
+#   extension_type = "HttpApplicationRouting"
+# }
+
 resource "azurerm_kubernetes_cluster" "k8s" {
   location            = var.resource_group.location
   name                = var.aks_name
@@ -24,6 +31,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.aksUserAssignedIdentity.id]
   }
+
 
   default_node_pool {
     name                         = "agentpool"
@@ -43,12 +51,14 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   }
 
   auto_scaler_profile {
-    scale_down_unneeded         = "1m"
-    scale_down_delay_after_add  = "1m"
-    scale_down_unready          = "1m"
+    scale_down_unneeded        = "1m"
+    scale_down_delay_after_add = "1m"
+    scale_down_unready         = "1m"
+    // deployment will always be done in the additional node pool. Not the default node pool
     skip_nodes_with_system_pods = true
   }
 
+  // need more explanation
   network_profile {
     network_plugin      = "azure"
     network_plugin_mode = "overlay"

@@ -42,12 +42,24 @@ module "aks" {
   acr                             = module.acr.acr
 }
 
+resource "local_file" "kubeconfig" {
+  content  = module.aks.kube_config_raw
+  filename = "${path.module}/temp/kubeconfig.yaml"
+}
+
 module "keyVault" {
   source                           = "./Modules/KeyVault"
   keyVaultName                     = local.keyVaultName
   resourceGroupName                = azurerm_resource_group.rg.name
   location                         = azurerm_resource_group.rg.location
   keyVaultUserAssignedIdentityName = local.keyVaultIdentityName
+}
+
+module "cert_manager" {
+  source           = "./Modules/CertMgr"
+  kube_config_file = local_file.kubeconfig.filename
+  cert_version     = "v1.17.0"
+  email            = var.issuer_email
 }
 
 # module "nginx" {
