@@ -22,7 +22,7 @@ provider "kubernetes" {
 resource "kubernetes_secret" "acr_auth" {
   metadata {
     name      = "acr-secret"
-    namespace = "test"
+    namespace = var.namespace
   }
 
   data = {
@@ -38,16 +38,4 @@ resource "kubernetes_secret" "acr_auth" {
   }
 
   type = "kubernetes.io/dockerconfigjson"
-}
-
-output "login_server" {
-  value = data.azurerm_container_registry.acr.login_server
-}
-
-output "admin_username" {
-  value = data.azurerm_container_registry.acr.admin_username
-}
-
-output "admin_password" {
-  value = data.azurerm_container_registry.acr.admin_password
 }

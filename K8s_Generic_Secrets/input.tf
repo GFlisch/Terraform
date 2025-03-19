@@ -1,6 +1,5 @@
 variable "rootName"{
   type = string
-  default = "Aks-Arc4u"
 }
 
 locals {
@@ -16,5 +15,4 @@ variable certificateName {
 
 variable "namespace" {
   type = string
-  default = "nginx"
 }

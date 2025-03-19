@@ -1,6 +1,5 @@
 variable "rootName"{
   type = string
-  default = "Aks-Arc4u"
 }
 
 locals {

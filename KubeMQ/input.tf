@@ -1,11 +1,6 @@
-variable "aks_name" {
+variable "rootName"{
   type = string
 }
-
-variable "kube_config_file" {
-  type = string
-}
-
 
 variable "tags" {
   type    = map(string)
@@ -23,4 +18,9 @@ variable "namespace" {
 }
 variable "kubemq_build" {
   type = string
+}
+
+locals {
+  rgHubName = "${var.rootName}-Hub-RG"
+  aksName = "${var.rootName}-aks"
 }

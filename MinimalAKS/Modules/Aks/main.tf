@@ -11,13 +11,6 @@ resource "azurerm_role_assignment" "acr_pull" {
   principal_id         = azurerm_kubernetes_cluster.k8s.kubelet_identity[0].object_id
 }
 
-
-# resource "azurerm_kubernetes_cluster_extension" "k8sRouting" {
-#   name = "httpApplicationRouting"
-#   cluster_id = azurerm_kubernetes_cluster.k8s.id
-#   extension_type = "HttpApplicationRouting"
-# }
-
 resource "azurerm_kubernetes_cluster" "k8s" {
   location            = var.resource_group.location
   name                = var.aks_name

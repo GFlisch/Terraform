@@ -1,6 +1,10 @@
 variable "rootName"{
   type = string
-  default = "Aks-Arc4u"
+}
+
+variable "namespace" {
+  type = string
+  description = "The namespace to deploy the secret" 
 }
 
 locals {

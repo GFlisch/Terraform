@@ -1,6 +1,6 @@
 variable "rootName" {
   type    = string
-  default = "Aks-EliaTest"
+  default = "Aks-Guidance"
 }
 
 variable "base_cidr" {

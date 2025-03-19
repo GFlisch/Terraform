@@ -1,6 +1,10 @@
 variable "rootName"{
   type = string
-  default = "Aks-Arc4u"
+}
+
+variable "azure_secret_name" {
+  type = string
+  default = "azure-storage"
 }
 
 locals {
