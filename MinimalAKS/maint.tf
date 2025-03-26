@@ -55,6 +55,11 @@ module "keyVault" {
   keyVaultUserAssignedIdentityName = local.keyVaultIdentityName
 }
 
+module "csi_driver_aks" {
+  source           = "./Modules/Csi_Driver_Aks"
+  kube_config_file = local_file.kubeconfig.filename
+}
+
 module "cert_manager" {
   source           = "./Modules/CertMgr"
   kube_config_file = local_file.kubeconfig.filename

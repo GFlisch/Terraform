@@ -19,6 +19,10 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   dns_prefix          = "arc4u"
   # install nginx
   http_application_routing_enabled = true
+  key_vault_secrets_provider {
+    secret_rotation_enabled = true
+    secret_rotation_interval = "2h"
+  }
 
   identity {
     type         = "UserAssigned"
