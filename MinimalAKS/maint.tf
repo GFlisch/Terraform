@@ -70,18 +70,3 @@ module "cert_manager" {
 #   cert_folder    = local.certFolder
 #   kube_config    = module.aks.kube_config
 # }
-
-# module "redis" {
-#   source = "./Modules/Redis"
-#   resource_group = azurerm_resource_group.rg
-#   redis_cache_name = "GuidanceCache"
-# }
-
-# module "kubemq" {
-#   source = "./Modules/KubeMQ"
-#   resource_group = azurerm_resource_group.rg
-#   aks_name = local.aksName
-#   kubemq_build = "https://deploy.kubemq.io/build/2738749728506952"
-#   kube_config = module.aks.kube_config
-#   kube_config_raw = module.aks.kube_config_raw
-# }

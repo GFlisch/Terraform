@@ -83,3 +83,11 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
     ignore_changes = [node_count]
   }
 }
+
+# need to apply here the IngressClass
+# apiVersion: networking.k8s.io/v1
+# kind: IngressClass
+# metadata:
+#   name: addon-http-application-routing
+# spec:
+#   controller: k8s.io/ingress-nginx
