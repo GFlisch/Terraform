@@ -55,16 +55,21 @@ module "keyVault" {
   keyVaultUserAssignedIdentityName = local.keyVaultIdentityName
 }
 
-module "csi_driver_aks" {
-  source           = "./Modules/Csi_Driver_Aks"
-  kube_config_file = local_file.kubeconfig.filename
-}
+# module "csi_driver_aks" {
+#   source           = "./Modules/Csi_Driver_Aks"
+#   kube_config_file = local_file.kubeconfig.filename
+# }
 
 module "cert_manager" {
   source           = "./Modules/CertMgr"
   kube_config_file = local_file.kubeconfig.filename
   cert_version     = "v1.17.0"
   email            = var.issuer_email
+}
+
+module "key_vault_secrets" {
+  source         = "./Modules/AzureKV_Register_Secrets"
+  rootName = var.rootName
 }
 
 # module "nginx" {

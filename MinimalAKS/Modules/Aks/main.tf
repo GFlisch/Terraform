@@ -20,7 +20,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   # install nginx
   http_application_routing_enabled = true
   key_vault_secrets_provider {
-    secret_rotation_enabled = true
+    secret_rotation_enabled  = true
     secret_rotation_interval = "2h"
   }
 
