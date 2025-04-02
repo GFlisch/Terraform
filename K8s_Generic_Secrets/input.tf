@@ -3,7 +3,7 @@ variable "rootName"{
 }
 
 locals {
-  rgHubName = "${var.rootName}-Hub-RG"
+  rgHubName = "${var.rootName}-RG"
   aksName = "${var.rootName}-aks"
   certFolder = "${path.module}/certs"  
 }

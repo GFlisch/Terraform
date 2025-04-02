@@ -2,7 +2,7 @@
 
 # Virtual Network
 resource "azurerm_virtual_network" "vnet" {
-  name                = local.vnet_name
+  name                = var.vnet_name
   address_space       = [var.vnet_mask]
   location            = var.resource_group.location
   resource_group_name = var.resource_group.name

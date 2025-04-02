@@ -1,5 +1,5 @@
 resource "azurerm_user_assigned_identity" "aksUserAssignedIdentity" {
-  name                = local.aksIdentityName
+  name                = var.aksIdentityName
   resource_group_name = var.resource_group.name
   location            = var.resource_group.location
   tags                = var.tags

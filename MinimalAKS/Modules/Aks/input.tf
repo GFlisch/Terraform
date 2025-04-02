@@ -55,6 +55,10 @@ variable "acr" {
   })
 }
 
+variable "aksIdentityName" {
+  type = string
+}
+
 locals {
-  aksIdentityName = "${var.aks_name}-aks-identity"
+  managed_resource_group = format("MC_%s_%s_%s", var.resource_group.name, var.aks_name, var.resource_group.location)
 }

@@ -15,4 +15,11 @@ resource "helm_release" "secrets_store_csi_driver" {
 
   # Optional: Add values if you need to customize the installation
   values = []
+
+  # Force Helm to take ownership of existing resources
+  force_update = true
+  recreate_pods = true
+
+  # Cleanup on failure to avoid resource conflicts
+  cleanup_on_fail = true
 }

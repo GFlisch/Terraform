@@ -4,16 +4,12 @@ variable "keyVaultName" {
 
 }
 
-variable "resourceGroupName" {
-  description = "The name of the resource group"
-  type        = string
-
-}
-
-variable "location" {
-  description = "The location of the Key Vault"
-  type        = string
-
+variable "resource_group" {
+  type = object({
+    name     = string
+    location = string
+    id       = string
+  })
 }
 
 variable "tags" {
@@ -23,7 +19,12 @@ variable "tags" {
 
 }
 
-variable "keyVaultUserAssignedIdentityName" {
+# variable "keyVaultUserAssignedIdentityName" {
+#   description = "The name of the user assigned identity"
+#   type        = string
+# }
+
+variable "aksIdentityPrincipalId" {
   description = "The name of the user assigned identity"
   type        = string
 }

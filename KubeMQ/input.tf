@@ -21,6 +21,6 @@ variable "kubemq_build" {
 }
 
 locals {
-  rgHubName = "${var.rootName}-Hub-RG"
+  rgHubName = "${var.rootName}-RG"
   aksName = "${var.rootName}-aks"
 }

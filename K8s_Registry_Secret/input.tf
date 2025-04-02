@@ -8,7 +8,7 @@ variable "namespace" {
 }
 
 locals {
-  rgHubName = "${var.rootName}-Hub-RG"
+  rgHubName = "${var.rootName}-RG"
   acrName = "${replace(var.rootName, "-", "")}acr"
   aksName = "${var.rootName}-aks"
   keyVaultIdentityName = "${var.rootName}-kv-user-identity"

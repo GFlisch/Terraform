@@ -6,10 +6,11 @@ resource "null_resource" "apply_kubectl_cert" {
 
 resource "null_resource" "apply_cert_issuer" {
   provisioner "local-exec" {
-    command = <<EOT
-      echo '${local.issuer_yaml_content}' > issuer.yaml
-      kubectl apply -f issuer.yaml
-      rm issuer.yaml
+    command     = <<EOT
+      if not exist temp mkdir temp
+      echo '${local.issuer_yaml_content}' > temp\issuer.yaml
+      kubectl apply -f temp\issuer.yaml
     EOT
+    interpreter = ["cmd", "/c"]
   }
 }

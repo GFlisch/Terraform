@@ -3,12 +3,9 @@ variable "tags" {
   default = {}
 }
 
-variable "rootName" {
+variable "keyVaultId" {
   type = string
 }
-
 locals {
-  rgHubName    = "${var.rootName}-Hub-RG"
-  keyVaultName = "${var.rootName}-kv"
-  certFolder   = "${path.module}/certs"
+  certFolder = "${path.module}/certs"
 }

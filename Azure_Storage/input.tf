@@ -8,7 +8,7 @@ variable "azure_secret_name" {
 }
 
 locals {
-  rgHubName = "${var.rootName}-Hub-RG"
+  rgHubName = "${var.rootName}-RG"
 }
 
 variable "tags" {

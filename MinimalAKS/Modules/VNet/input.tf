@@ -6,9 +6,6 @@ variable "resource_group" {
     id       = string
   })
 }
-variable "rootName" {
-  type = string
-}
 
 variable "vnet_mask" {
   type = string
@@ -26,7 +23,10 @@ variable "other_subnet_mask" {
   type = string
 }
 
+variable "vnet_name" {
+  type = string
+}
+
 locals {
-  vnet_name            = "${var.rootName}Vnet"
   first_private_gtw_ip = cidrhost(var.gtw_subnet_mask, 5)
 }

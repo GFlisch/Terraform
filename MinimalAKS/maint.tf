@@ -5,16 +5,22 @@ module "naming" {
   suffix  = ["hub"]
 }
 
+resource "random_string" "salt" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
 # rg is required for resource modules
 resource "azurerm_resource_group" "rg" {
-  location = "westeurope" ##module.regions.regions[random_integer.region_index.result].name
+  location = var.location
   name     = local.rgHubName
 }
 
 module "network" {
   source            = "./Modules/VNet"
   resource_group    = azurerm_resource_group.rg
-  rootName          = var.rootName
+  vnet_name         = local.vnetName
   vnet_mask         = var.base_cidr
   gtw_subnet_mask   = cidrsubnet(var.base_cidr, 12, 0)
   aks_subnet_mask   = cidrsubnet(var.base_cidr, 8, 1)
@@ -40,6 +46,7 @@ module "aks" {
   additional_node_pool_node_count = 3
   aks_subnet                      = module.network.aks_subnet
   acr                             = module.acr.acr
+  aksIdentityName                 = local.aksIdentityName
 }
 
 resource "local_file" "kubeconfig" {
@@ -48,17 +55,21 @@ resource "local_file" "kubeconfig" {
 }
 
 module "keyVault" {
-  source                           = "./Modules/KeyVault"
-  keyVaultName                     = local.keyVaultName
-  resourceGroupName                = azurerm_resource_group.rg.name
-  location                         = azurerm_resource_group.rg.location
-  keyVaultUserAssignedIdentityName = local.keyVaultIdentityName
+  source                 = "./Modules/KeyVault"
+  keyVaultName           = local.keyVaultName
+  resource_group         = azurerm_resource_group.rg
+  aksIdentityPrincipalId = module.aks.aksUserAssignedIdentityPrincipalId
 }
 
-# module "csi_driver_aks" {
-#   source           = "./Modules/Csi_Driver_Aks"
-#   kube_config_file = local_file.kubeconfig.filename
-# }
+module "key_vault_secrets" {
+  source     = "./Modules/AzureKV_Register_Secrets"
+  keyVaultId = module.keyVault.keyVaultId
+}
+
+module "csi_driver_aks" {
+  source           = "./Modules/Csi_Driver_Aks"
+  kube_config_file = local_file.kubeconfig.filename
+}
 
 module "cert_manager" {
   source           = "./Modules/CertMgr"
@@ -67,10 +78,7 @@ module "cert_manager" {
   email            = var.issuer_email
 }
 
-module "key_vault_secrets" {
-  source         = "./Modules/AzureKV_Register_Secrets"
-  rootName = var.rootName
-}
+
 
 # module "nginx" {
 #   source         = "./Modules/Nginx"
