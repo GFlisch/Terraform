@@ -40,5 +40,4 @@ resource "azurerm_role_assignment" "keyVaultSecretsOfficerRoleAssignment" {
   principal_id         = data.azurerm_client_config.current.object_id
 }
 
-# TODO remove for production
 data "azurerm_client_config" "current" {}

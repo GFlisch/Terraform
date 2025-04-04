@@ -69,6 +69,8 @@ module "key_vault_secrets" {
 module "csi_driver_aks" {
   source           = "./Modules/Csi_Driver_Aks"
   kube_config_file = local_file.kubeconfig.filename
+  aks_principal_id = module.aks.aksUserAssignedIdentityPrincipalId
+  key_vault_id     = module.keyVault.keyVaultId
 }
 
 module "cert_manager" {
