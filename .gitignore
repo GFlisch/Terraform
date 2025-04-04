@@ -11,6 +11,7 @@
 
 # temporary files
 **/temp/*
+**/output/*
 
 # .tfstate files
 *.tfstate

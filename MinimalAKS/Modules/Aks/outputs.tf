@@ -15,3 +15,7 @@ output "kube_config_raw" {
 output "aksUserAssignedIdentityPrincipalId" {
   value = azurerm_user_assigned_identity.aksUserAssignedIdentity.principal_id
 }
+
+output "aksUserAssignedIdentityId" {
+  value = azurerm_user_assigned_identity.aksUserAssignedIdentity.client_id
+}

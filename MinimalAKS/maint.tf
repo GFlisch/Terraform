@@ -17,6 +17,15 @@ resource "azurerm_resource_group" "rg" {
   name     = local.rgHubName
 }
 
+resource "null_resource" "apply_cert_issuer" {
+  provisioner "local-exec" {
+    command     = <<EOT
+      if not exist output mkdir output
+    EOT
+    interpreter = ["cmd", "/c"]
+  }
+}
+
 module "network" {
   source            = "./Modules/VNet"
   resource_group    = azurerm_resource_group.rg
@@ -70,7 +79,9 @@ module "csi_driver_aks" {
   source           = "./Modules/Csi_Driver_Aks"
   kube_config_file = local_file.kubeconfig.filename
   aks_principal_id = module.aks.aksUserAssignedIdentityPrincipalId
+  aks_client_id = module.aks.aksUserAssignedIdentityId
   key_vault_id     = module.keyVault.keyVaultId
+  key_vault_name   = module.keyVault.keyVaultName
 }
 
 module "cert_manager" {
@@ -79,14 +90,3 @@ module "cert_manager" {
   cert_version     = "v1.17.0"
   email            = var.issuer_email
 }
-
-
-
-# module "nginx" {
-#   source         = "./Modules/Nginx"
-#   resource_group = azurerm_resource_group.rg
-#   aks_name       = local.aksName
-#   keyVaultId     = module.keyVault.keyVaultId
-#   cert_folder    = local.certFolder
-#   kube_config    = module.aks.kube_config
-# }

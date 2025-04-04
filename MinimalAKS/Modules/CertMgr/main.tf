@@ -4,13 +4,7 @@ resource "null_resource" "apply_kubectl_cert" {
   }
 }
 
-resource "null_resource" "apply_cert_issuer" {
-  provisioner "local-exec" {
-    command     = <<EOT
-      if not exist temp mkdir temp
-      echo '${local.issuer_yaml_content}' > temp\issuer.yaml
-      kubectl apply -f temp\issuer.yaml
-    EOT
-    interpreter = ["cmd", "/c"]
-  }
+resource "local_file" "cert_issuer_yaml" {
+  filename = "./output/cert_issuer.yaml" # Path to the output file
+  content  = local.issuer_yaml_content               # Content to write to the file
 }
