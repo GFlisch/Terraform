@@ -2,11 +2,7 @@ variable "rootName"{
   type = string
 }
 
-locals {
-  rgHubName = "${var.rootName}-RG"
-}
-
-variable "redis_cache_name" {
+variable "salt" {
   type = string
 }
 
@@ -24,3 +20,9 @@ variable "sku_name" {
   type = string
   default = "Basic"
 }
+
+ locals {
+  cleanRootName        = replace(var.rootName, "/[^a-zA-Z0-9-]/", "-")
+  rgHubName            = "${local.cleanRootName}-RG-${var.salt}"
+  redisCacheName       = "${local.cleanRootName}-Redis-${var.salt}"
+ }

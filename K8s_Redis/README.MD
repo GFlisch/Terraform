@@ -4,5 +4,5 @@ After ou have created a Minimal Aks setup, if you need a redis cache in azure fo
 
 Execute those commands:
 terraform init
-terraform plan -var="redis_cache_name=my-redis" -out=tfplan
+terraform plan -var="redis_cache_name=my-redis" -var="salt=wxyz" -out=tfplan
 terraform apply tfplan
