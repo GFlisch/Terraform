@@ -38,6 +38,6 @@ EOT
 }
 
 resource "local_file" "acr" {
-  filename = "./output/acr.text"    # Path to the output file
-  content  = local.filled_template  # Content to write to the file
+  filename = "./output/acr.text"   # Path to the output file
+  content  = local.filled_template # Content to write to the file
 }

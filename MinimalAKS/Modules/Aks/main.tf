@@ -12,13 +12,15 @@ resource "azurerm_role_assignment" "acr_pull" {
 }
 
 resource "azurerm_kubernetes_cluster" "k8s" {
-  location            = var.resource_group.location
-  name                = var.aks_name
-  resource_group_name = var.resource_group.name
-  oidc_issuer_enabled = true
-  dns_prefix          = "arc4u"
+  location                  = var.resource_group.location
+  name                      = var.aks_name
+  resource_group_name       = var.resource_group.name
+  oidc_issuer_enabled       = true
+  workload_identity_enabled = true # Enable workload identity
+  dns_prefix                = "arc4u"
   # install nginx
   http_application_routing_enabled = true
+
   key_vault_secrets_provider {
     secret_rotation_enabled  = true
     secret_rotation_interval = "2h"
@@ -87,11 +89,3 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
     ignore_changes = [node_count]
   }
 }
-
-# need to apply here the IngressClass
-# apiVersion: networking.k8s.io/v1
-# kind: IngressClass
-# metadata:
-#   name: addon-http-application-routing
-# spec:
-#   controller: k8s.io/ingress-nginx

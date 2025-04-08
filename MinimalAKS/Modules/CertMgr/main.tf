@@ -6,5 +6,5 @@ resource "null_resource" "apply_kubectl_cert" {
 
 resource "local_file" "cert_issuer_yaml" {
   filename = "./output/cert_issuer.yaml" # Path to the output file
-  content  = local.issuer_yaml_content               # Content to write to the file
+  content  = local.issuer_yaml_content   # Content to write to the file
 }

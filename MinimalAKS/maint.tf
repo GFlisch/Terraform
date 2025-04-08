@@ -79,9 +79,10 @@ module "csi_driver_aks" {
   source           = "./Modules/Csi_Driver_Aks"
   kube_config_file = local_file.kubeconfig.filename
   aks_principal_id = module.aks.aksUserAssignedIdentityPrincipalId
-  aks_client_id = module.aks.aksUserAssignedIdentityId
+  aks_client_id    = module.aks.aksUserAssignedIdentityId
   key_vault_id     = module.keyVault.keyVaultId
   key_vault_name   = module.keyVault.keyVaultName
+  sa_name          = lower("${local.cleanRootName}-sa")
 }
 
 module "cert_manager" {
