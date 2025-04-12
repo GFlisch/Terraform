@@ -1,3 +1,9 @@
+provider "helm" {
+  kubernetes {
+    config_path = var.kube_config_file
+  }
+}
+
 resource "azurerm_user_assigned_identity" "aksUserAssignedIdentity" {
   name                = var.aksIdentityName
   resource_group_name = var.resource_group.name
@@ -20,6 +26,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   dns_prefix                = "arc4u"
   # install nginx
   http_application_routing_enabled = true
+  azure_policy_enabled             = true
 
   key_vault_secrets_provider {
     secret_rotation_enabled  = true
@@ -66,6 +73,9 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     service_cidr        = "10.255.255.0/24"
     dns_service_ip      = "10.255.255.253"
   }
+
+
+
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "additional" {

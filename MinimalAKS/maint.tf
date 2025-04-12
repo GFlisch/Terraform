@@ -70,11 +70,6 @@ module "keyVault" {
   aksIdentityPrincipalId = module.aks.aksUserAssignedIdentityPrincipalId
 }
 
-module "key_vault_secrets" {
-  source     = "./Modules/AzureKV_Register_Secrets"
-  keyVaultId = module.keyVault.keyVaultId
-}
-
 module "csi_driver_aks" {
   source           = "./Modules/Csi_Driver_Aks"
   kube_config_file = local_file.kubeconfig.filename
@@ -90,4 +85,9 @@ module "cert_manager" {
   kube_config_file = local_file.kubeconfig.filename
   cert_version     = "v1.17.0"
   email            = var.issuer_email
+}
+
+module "key_vault_secrets" {
+  source     = "./Modules/AzureKV_Register_Secrets"
+  keyVaultId = module.keyVault.keyVaultId
 }

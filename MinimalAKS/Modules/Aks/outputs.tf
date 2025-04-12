@@ -19,3 +19,7 @@ output "aksUserAssignedIdentityPrincipalId" {
 output "aksUserAssignedIdentityId" {
   value = azurerm_user_assigned_identity.aksUserAssignedIdentity.client_id
 }
+
+output "oidc_issuer_url" {
+  value = azurerm_kubernetes_cluster.k8s.oidc_issuer_url
+}

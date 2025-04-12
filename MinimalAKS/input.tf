@@ -17,9 +17,14 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "salt" {
+  type    = string
+  default = ""
+}
+
 locals {
   cleanRootName        = replace(var.rootName, "/[^a-zA-Z0-9-]/", "-")
-  salt                 = random_string.salt.result
+  salt                 = var.salt != "" ? var.salt : random_string.salt.result
   rgHubName            = "${local.cleanRootName}-RG-${local.salt}"
   vnetName             = "${local.cleanRootName}-Vnet-${local.salt}"
   acrName              = lower("${replace(var.rootName, "/[^a-zA-Z0-9-]/", "")}acr${local.salt}")

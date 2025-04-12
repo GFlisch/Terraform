@@ -33,7 +33,7 @@ locals {
     tenant_id      = data.azurerm_client_config.current.tenant_id
   })
   service_account = templatefile("${path.module}/Template/ServiceAccount.yaml", {
-    aks_identity   = var.aks_client_id,
-    sa_name        = var.sa_name,
-  })  
+    aks_identity = var.aks_client_id,
+    sa_name      = var.sa_name,
+  })
 }
