@@ -71,13 +71,15 @@ module "keyVault" {
 }
 
 module "csi_driver_aks" {
-  source           = "./Modules/Csi_Driver_Aks"
-  kube_config_file = local_file.kubeconfig.filename
-  aks_principal_id = module.aks.aksUserAssignedIdentityPrincipalId
-  aks_client_id    = module.aks.aksUserAssignedIdentityId
-  key_vault_id     = module.keyVault.keyVaultId
-  key_vault_name   = module.keyVault.keyVaultName
-  sa_name          = lower("${local.cleanRootName}-sa")
+  source              = "./Modules/Csi_Driver_Aks"
+  kube_config_file    = local_file.kubeconfig.filename
+  workload_client_id  = module.keyVault.workloadIdentityId
+  key_vault_id        = module.keyVault.keyVaultId
+  key_vault_name      = module.keyVault.keyVaultName
+  sa_name             = lower("${local.cleanRootName}-sa")
+  resource_group_name = local.rgHubName
+  root_name           = local.cleanRootName
+  aks_name            = local.aksName
 }
 
 module "cert_manager" {

@@ -5,4 +5,7 @@ resource "azurerm_key_vault_secret" "secrets" {
   value        = file("${local.certFolder}/${each.key}")          # Read the file content
   key_vault_id = var.keyVaultId
   tags         = var.tags
+  lifecycle {
+    ignore_changes = [value] # Ignore changes to the value of the secret
+  }
 }

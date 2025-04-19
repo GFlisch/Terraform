@@ -19,11 +19,6 @@ variable "tags" {
 
 }
 
-# variable "keyVaultUserAssignedIdentityName" {
-#   description = "The name of the user assigned identity"
-#   type        = string
-# }
-
 variable "aksIdentityPrincipalId" {
   description = "The name of the user assigned identity"
   type        = string

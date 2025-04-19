@@ -10,6 +10,6 @@ output "keyVaultName" {
   value = azurerm_key_vault.keyvault.name
 }
 
-# output "keyVaultUserIdentityId" {
-#   value = azurerm_user_assigned_identity.keyVaultUserAssignedIdentity.id
-# }
+output "workloadIdentityId" {
+  value = azurerm_user_assigned_identity.workloadIdentity.client_id
+}
