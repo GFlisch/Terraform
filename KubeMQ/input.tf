@@ -2,6 +2,10 @@ variable "rootName"{
   type = string
 }
 
+variable "salt" {
+  type = string
+}
+
 variable "tags" {
   type    = map(string)
   default = {}
@@ -14,13 +18,13 @@ variable "kubemq_init" {
 
 variable "namespace" {
   type    = string
-  default = "kubemq"
 }
 variable "kubemq_build" {
   type = string
 }
 
 locals {
-  rgHubName = "${var.rootName}-RG"
-  aksName = "${var.rootName}-aks"
+  cleanRootName        = replace(var.rootName, "/[^a-zA-Z0-9-]/", "-")
+  rgHubName            = "${local.cleanRootName}-RG-${var.salt}"
+  aksName              = lower("${local.cleanRootName}-aks-${var.salt}")
 }

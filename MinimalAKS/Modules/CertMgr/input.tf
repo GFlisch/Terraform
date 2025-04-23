@@ -11,7 +11,7 @@ variable "tags" {
 
 variable "cert_version" {
   type    = string
-  default = "1.17.0"
+  default = "latest"
 }
 
 variable "email" {

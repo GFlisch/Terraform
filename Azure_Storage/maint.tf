@@ -3,7 +3,7 @@ data "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                     = lower(replace("${local.rgHubName}storage", "-", ""))
+  name                     = local.storageName
   resource_group_name      = data.azurerm_resource_group.rg.name
   location                 = data.azurerm_resource_group.rg.location
   account_tier             = "Standard"

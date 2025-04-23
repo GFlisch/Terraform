@@ -2,13 +2,19 @@ variable "rootName"{
   type = string
 }
 
+variable "salt" {
+  type = string
+}
+
 variable "azure_secret_name" {
   type = string
   default = "azure-storage"
 }
 
 locals {
-  rgHubName = "${var.rootName}-RG"
+  cleanRootName        = replace(var.rootName, "/[^a-zA-Z0-9-]/", "-")
+  rgHubName            = "${local.cleanRootName}-RG-${var.salt}"
+  storageName          = lower(replace("${local.cleanRootName}st${var.salt}", "-", ""))
 }
 
 variable "tags" {
@@ -19,8 +25,6 @@ variable "tags" {
 variable "file_shares" {
   type = map(number)  # Map of share_name = quota_in_gb
   default = {
-    "production"  = 50
-    "staging"     = 50
   }
 }
 
