@@ -27,6 +27,25 @@ variable "additional_node_pool_vm_size" {
   default     = "Standard_D2as_v5"
 }
 
+variable "additional_windows_node_pool_name" {
+  description = "The name of the additional node pool."
+  type        = string
+  default     = "windows"
+}
+
+variable "additional_windows_node_pool_vm_size" {
+  description = "The VM size for the additional node pool."
+  type        = string
+  default     = "Standard_D2as_v5"
+}
+
+variable "additional_windows_node_pool_node_count" {
+  description = "The number of nodes in the additional node pool."
+  type        = number
+  default     = 0
+}
+
+
 variable "additional_node_pool_node_count" {
   description = "The number of nodes in the additional node pool."
   type        = number

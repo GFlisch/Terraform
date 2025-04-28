@@ -99,3 +99,26 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
     ignore_changes = [node_count]
   }
 }
+
+resource "azurerm_kubernetes_cluster_node_pool" "additional" {
+  count                 = var.additional_windows_node_pool_node_count > 0 ? 1 : 0
+  name                  = var.additional_windows_node_pool_name
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.k8s.id
+  vm_size               = var.additional_windows_node_pool_vm_size
+  os_type               = "Windows"
+  min_count             = var.additional_windows_node_pool_node_count
+  max_count             = var.app_max_node_pool
+  auto_scaling_enabled  = true
+  max_pods              = 250
+  mode                  = "User"
+  orchestrator_version  = azurerm_kubernetes_cluster.k8s.kubernetes_version
+  vnet_subnet_id        = var.aks_subnet.id
+  zones                 = []
+  node_labels = {
+    "pool" = "windows-application"
+  }
+
+  lifecycle {
+    ignore_changes = [node_count]
+  }
+}
