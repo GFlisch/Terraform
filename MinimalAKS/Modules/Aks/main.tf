@@ -24,8 +24,6 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   oidc_issuer_enabled       = true
   workload_identity_enabled = true # Enable workload identity
   dns_prefix                = "arc4u"
-  # install nginx
-  http_application_routing_enabled = true
   azure_policy_enabled             = true
 
   key_vault_secrets_provider {

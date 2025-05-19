@@ -93,5 +93,4 @@ module "cert_manager" {
 module "key_vault_secrets" {
   source     = "./Modules/AzureKV_Register_Secrets"
   keyVaultId = module.keyVault.keyVaultId
-  depends_on = [ module.keyVault ]
 }
