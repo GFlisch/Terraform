@@ -28,9 +28,9 @@ variable "additional_node_pool_vm_size" {
 }
 
 variable "additional_windows_node_pool_name" {
-  description = "The name of the additional node pool."
+  description = "The name of the additional node pool, maximum 6 characters."
   type        = string
-  default     = "windows"
+  default     = "win"
 }
 
 variable "additional_windows_node_pool_vm_size" {

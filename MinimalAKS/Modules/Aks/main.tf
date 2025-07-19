@@ -24,8 +24,6 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   oidc_issuer_enabled       = true
   workload_identity_enabled = true # Enable workload identity
   dns_prefix                = "arc4u"
-  # install nginx
-  http_application_routing_enabled = true
   azure_policy_enabled             = true
 
   key_vault_secrets_provider {
@@ -37,6 +35,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.aksUserAssignedIdentity.id]
   }
+
 
 
   default_node_pool {
@@ -68,9 +67,11 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   network_profile {
     network_plugin      = "azure"
     network_plugin_mode = "overlay"
-    network_data_plane  = "cilium"
-    network_policy      = "cilium"
-    service_cidr        = "10.255.255.0/24"
+    # network_data_plane  = var.additional_windows_node_pool_node_count == 0 ? "cilium" : "azure"
+    # network_policy      = var.additional_windows_node_pool_node_count == 0 ? "cilium" : "azure"
+    network_data_plane  = "azure"
+    network_policy      = "azure"
+    service_cidr        = "10.255.255.0/24" 
     dns_service_ip      = "10.255.255.253"
   }
 
@@ -100,7 +101,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
   }
 }
 
-resource "azurerm_kubernetes_cluster_node_pool" "additional" {
+resource "azurerm_kubernetes_cluster_node_pool" "additionalWindows" {
   count                 = var.additional_windows_node_pool_node_count > 0 ? 1 : 0
   name                  = var.additional_windows_node_pool_name
   kubernetes_cluster_id = azurerm_kubernetes_cluster.k8s.id

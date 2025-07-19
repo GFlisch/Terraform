@@ -53,6 +53,7 @@ module "aks" {
   aks_name                        = local.aksName
   additional_node_pool_name       = "guidance"
   additional_node_pool_node_count = 3
+  additional_windows_node_pool_node_count = 3
   aks_subnet                      = module.network.aks_subnet
   acr                             = module.acr.acr
   aksIdentityName                 = local.aksIdentityName
